@@ -10,36 +10,31 @@ public class ThrowingBall : MonoBehaviour
     public GameObject playerCamera;
     private bool ballthrown = false;
     private float thrownTime;
-    // Start is called before the first frame update
+    private XRGrabInteractable grab;
+    
     void Start()
     {
-        
+        grab = GetComponent<XRGrabInteractable>(); 
     }
+
 
     void Update()
     {
         if(ballthrown && Time.realtimeSinceStartup > thrownTime + 1){
-            Debug.Log("RESET");
             ballthrown = false;
-            XRGrabInteractable grab = GetComponent<XRGrabInteractable>();       
             grab.interactionLayerMask = LayerMask.NameToLayer("Everything");  
         }
     }
 
     public void throwBall()
-    {
-
-        Debug.Log("TROW BALL");
-        
+    {        
         Rigidbody rb = this.gameObject.GetComponent<Rigidbody>();
-        XRGrabInteractable grab = GetComponent<XRGrabInteractable>();       
-        
+            
         grab.interactionLayerMask = new LayerMask();
         rb.useGravity = true;
         rb.AddForce(playerCamera.transform.rotation * playerCamera.transform.forward * throwingForce);
         ballthrown = true;
         thrownTime = Time.realtimeSinceStartup;
-        Debug.Log(thrownTime);
     }
 
 }
